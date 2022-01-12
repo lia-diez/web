@@ -1,0 +1,76 @@
+:root {
+  --light-blue: #5dd9c1;
+  --blue: #55c1ff;
+  --deep-blue: #5887ff;
+  --violet: #a682ff;
+  --deep-violet: #715aff;
+  --mint: #83b692;
+  --malachite: #478978;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template:
+    minmax(max-content, 25%)
+    minmax(max-content, 10%)
+    minmax(max-content, 35%)
+    minmax(max-content, 5%)
+    minmax(max-content, 25%)
+    / 1fr 3fr 1fr;
+  grid-template-areas:
+    's1 s1 s1'
+    's2 s3 s4'
+    's5 s3 s4'
+    's5 s6 s4'
+    's7 s7 s7';
+}
+
+main img {
+  height: 70%;
+}
+
+h1 {
+  text-align: right;
+}
+
+header {
+  grid-area: s1;
+  background-color: var(--light-blue);
+}
+
+.nav-header {
+  grid-area: s2;
+  background-color: var(--blue);
+}
+
+nav {
+  grid-area: s5;
+  background-color: var(--deep-blue);
+  text-align: center;
+}
+
+main {
+  grid-area: s3;
+  background-color: var(--violet);
+  text-align: center;
+}
+
+.main-footer {
+  grid-area: s6;
+  background: var(--deep-violet);
+}
+
+aside {
+  grid-area: s4;
+  background-color: var(--mint);
+  direction: rtl;
+}
+
+footer {
+  grid-area: s7;
+  background-color: var(--malachite);
+}
