@@ -1,0 +1,99 @@
+:root {
+  --first-color: #f0f;
+  --second-color: #0ff;
+}
+
+.glitch {
+  font-family: Consolas, monaco, monospace;
+  font-size: 8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: center;
+  text-shadow: 0.04em 0 0 var(--first-color), -0.04em 0 0 var(--second-color);
+}
+
+.glitch span {
+  white-space: nowrap;
+  color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.glitch1 {
+  clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+  animation: glitch1 450ms infinite;
+}
+
+.glitch2 {
+  margin-left: 0.025em;
+  clip-path: polygon(0 30%, 100% 30%, 100% 45%, 0 45%);
+  animation: glitch2 500ms infinite;
+}
+
+.glitch3 {
+  clip-path: polygon(0 45%, 100% 45%, 100% 68%, 0 68%);
+  animation: glitch3 480ms infinite;
+}
+
+.glitch4 {
+  margin-left: -0.03em;
+  clip-path: polygon(0 68%, 100% 68%, 100% 95%, 0 95%);
+  animation: glitch4 550ms infinite;
+}
+
+@keyframes glitch1 {
+  32% {
+    transform: translateX(0);
+  }
+
+  35% {
+    transform: translateX(-0.02em);
+  }
+
+  45% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glitch2 {
+  2% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(0.09em);
+  }
+
+  10% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glitch3 {
+  52% {
+    transform: translateX(0);
+  }
+
+  55% {
+    transform: translateX(-0.02em);
+  }
+
+  75% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glitch4 {
+  3% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(-0.07em);
+  }
+
+  13% {
+    transform: translateX(0);
+  }
+}

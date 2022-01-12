@@ -1,0 +1,124 @@
+:root {
+  --first-color: #f0fc;
+  --second-color: #0ffc;
+}
+
+body{
+  background-color: black;
+}
+
+.glitch {
+  background-color: black;
+  font-family: Bahnschrift, monospace;
+  font-size: 9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: center;
+}
+
+.glitch span {
+  white-space: nowrap;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.glitch1 {
+  clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+  animation: glitch1 2500ms infinite;
+}
+
+.glitch2 {
+  clip-path: polygon(0 29.85%, 100% 29.85%, 100% 45%, 0 45%);
+  animation: glitch2 2500ms infinite;
+}
+
+.glitch3 {
+  clip-path: polygon(0 44.85%, 100% 44.85%, 100% 68%, 0 68%);
+  animation: glitch3 2500ms infinite;
+}
+
+.glitch4 {
+  clip-path: polygon(0 67.85%, 100% 67.85%, 100% 95%, 0 95%);
+  animation: glitch4 2500ms infinite;
+}
+
+@keyframes glitch1 {
+  2% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(-0.02em);
+    text-shadow: 0.03em 0 0 var(--first-color), -0.03em 0 0 var(--second-color);
+  }
+
+  6% {
+    text-shadow: 0 0 0;
+  }
+
+  7% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glitch2 {
+  2% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(0.1em);
+    text-shadow: 0.03em 0 0 var(--first-color), -0.03em 0 0 var(--second-color);
+  }
+
+  6% {
+    text-shadow: 0 0 0;
+    transform: translateX(-0.02em);
+  }
+
+  7% {
+    transform: translateX(0);
+
+  }
+}
+
+@keyframes glitch3 {
+  2% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(-0.02em);
+    text-shadow: 0.03em 0 0 var(--first-color), -0.03em 0 0 var(--second-color);
+  }
+
+  6% {
+    text-shadow: 0 0 0;
+  }
+
+  7% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glitch4 {
+  3% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(-0.09em);
+    text-shadow: 0.03em 0 0 var(--first-color), -0.03em 0 0 var(--second-color);
+  }
+
+  6% {
+    text-shadow: 0 0 0;
+    transform: translateX(0.05em);
+  }
+
+  8% {
+    transform: translateX(0);
+  }
+}
