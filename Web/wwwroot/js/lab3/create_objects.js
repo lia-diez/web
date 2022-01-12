@@ -13,84 +13,97 @@ let secondColor;
 let field;
 
 function createFormEvent() {
-  document.getElementsByTagName('main')[0].removeChild(createForm);
-  field = document.createElement('fieldset');
-  const legend = document.createElement('legend');
-  legend.textContent = 'Create objects';
-  field.appendChild(legend);
+    document.getElementsByTagName('main')[0].removeChild(createForm);
+    field = document.createElement('fieldset');
+    const legend = document.createElement('legend');
+    legend.textContent = 'Create objects';
+    field.appendChild(legend);
 
-  const form = document.createElement('form');
-  form.setAttribute('method', 'post');
+    const form = document.createElement('form');
+    form.setAttribute('method', 'post');
 
-  let labels = [4];
-  let ids = ['duration', 'text color', 'first color', 'second color'];
-  let paragraphs = [4];
-  for (let i = 0; i < 4; i++) {
-    labels[i] = document.createElement('label');
-    labels[i].setAttribute('for', ids[i]);
-    labels[i].textContent = ids[i];
-    labels[i].style.marginRight = '10px';
-    paragraphs[i] = document.createElement('p');
-  }
+    let labels = [4];
+    let ids = ['duration', 'text color', 'first color', 'second color'];
+    let paragraphs = [4];
+    for (let i = 0; i < 4; i++) {
+        labels[i] = document.createElement('label');
+        labels[i].setAttribute('for', ids[i]);
+        labels[i].textContent = ids[i];
+        labels[i].style.marginRight = '10px';
+        paragraphs[i] = document.createElement('p');
+    }
 
-  duration = document.createElement('input');
-  duration.setAttribute('type', 'text');
-  duration.setAttribute('min', '0');
-  duration.setAttribute('id', ids[0]);
-  paragraphs[0].appendChild(labels[0]);
-  paragraphs[0].appendChild(duration);
+    duration = document.createElement('input');
+    duration.setAttribute('type', 'text');
+    duration.setAttribute('min', '0');
+    duration.setAttribute('id', ids[0]);
+    paragraphs[0].appendChild(labels[0]);
+    paragraphs[0].appendChild(duration);
 
-  textColor = document.createElement('input');
-  textColor.setAttribute('type', 'color');
-  textColor.setAttribute('id', ids[1]);
-  paragraphs[1].appendChild(labels[1]);
-  paragraphs[1].appendChild(textColor);
+    textColor = document.createElement('input');
+    textColor.setAttribute('type', 'color');
+    textColor.setAttribute('id', ids[1]);
+    paragraphs[1].appendChild(labels[1]);
+    paragraphs[1].appendChild(textColor);
 
-  firstColor = document.createElement('input');
-  firstColor.setAttribute('type', 'color');
-  firstColor.setAttribute('id', ids[2]);
-  paragraphs[2].appendChild(labels[2]);
-  paragraphs[2].appendChild(firstColor);
+    firstColor = document.createElement('input');
+    firstColor.setAttribute('type', 'color');
+    firstColor.setAttribute('id', ids[2]);
+    paragraphs[2].appendChild(labels[2]);
+    paragraphs[2].appendChild(firstColor);
 
-  secondColor = document.createElement('input');
-  secondColor.setAttribute('type', 'color');
-  secondColor.setAttribute('id', ids[3]);
-  paragraphs[3].appendChild(labels[3]);
-  paragraphs[3].appendChild(secondColor);
+    secondColor = document.createElement('input');
+    secondColor.setAttribute('type', 'color');
+    secondColor.setAttribute('id', ids[3]);
+    paragraphs[3].appendChild(labels[3]);
+    paragraphs[3].appendChild(secondColor);
 
-  for (let i = 0; i < 4; i++) {
-    form.appendChild(paragraphs[i]);
-  }
+    for (let i = 0; i < 4; i++) {
+        form.appendChild(paragraphs[i]);
+    }
 
-  field.appendChild(form);
-  document.getElementsByTagName('main')[0].appendChild(field);
+    field.appendChild(form);
+    document.getElementsByTagName('main')[0].appendChild(field);
 
-  let buttonParagraph = document.createElement('p');
-  let buttonSend = document.createElement('button');
-  buttonSend.textContent = 'Create!';
-  buttonSend.addEventListener('click', createGlitch);
-  buttonParagraph.appendChild(buttonSend);
-  form.appendChild(buttonParagraph);
+    let buttonParagraph = document.createElement('p');
+    let buttonSend = document.createElement('button');
+    buttonSend.textContent = 'Create!';
+    buttonSend.addEventListener('click', send);
+    buttonParagraph.appendChild(buttonSend);
+    form.appendChild(buttonParagraph);
 }
 
-function createGlitch() {
-  let main = document.getElementsByTagName('main')[0];
-  main.removeChild(field);
-  main.innerHTML +=
-      "<div class='glitch' style='--duration: " +
-      duration.value +
-      'ms; --first-color: ' +
-      firstColor.value +
-      '; --second-color: ' +
-      secondColor.value +
-      '; --font-color: ' +
-      textColor.value +
-      "'><span class='glitch1'>Glitch text</span>" +
-      "<span class='glitch2'>Glitch text</span>  " +
-      "<span class='glitch3'>Glitch text</span>  " +
-      "<span class='glitch4'>Glitch text</span> </div>";
+async function send(e) {
+    let main = document.getElementsByTagName('main')[0];
+    main.removeChild(field);
+    main.innerHTML +=
+        "<div class='glitch' style='--duration: " +
+        duration.value +
+        'ms; --first-color: ' +
+        firstColor.value +
+        '; --second-color: ' +
+        secondColor.value +
+        '; --font-color: ' +
+        textColor.value +
+        "'><span class='glitch1'>Glitch text</span>" +
+        "<span class='glitch2'>Glitch text</span>  " +
+        "<span class='glitch3'>Glitch text</span>  " +
+        "<span class='glitch4'>Glitch text</span> </div>";
 
-  main.innerHTML += '<div> </div>';
+    main.innerHTML += '<div> </div>';
 
-  document.getElementsByTagName('main')[0].appendChild(createForm);
+    document.getElementsByTagName('main')[0].appendChild(createForm);
+    e.preventDefault();
+    const response = await fetch('/api/setting', {
+        method: 'POST',
+        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            duration,
+            firstColor,
+            secondColor,
+            textColor,
+        }),
+    });
+    const message = await response.json();
+    alert(message);
 }
