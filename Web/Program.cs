@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder();
 var app = builder.Build();
+app.UseRouting();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.Run(async (context) =>
 {
@@ -13,7 +18,7 @@ app.Run(async (context) =>
     var request = context.Request;
     if (request.Path == "/api/setting")
     {
-        var responseText = "Incorrect data";
+        var record = "Incorrect data";
 
         if (request.HasJsonContentType())
         {
@@ -21,11 +26,37 @@ app.Run(async (context) =>
             jsonOptions.Converters.Add(new GlitchConverter());
             var glitch = await request.ReadFromJsonAsync<Glitch>(jsonOptions);
             if (glitch != null)
-                responseText =
-                    $"Duration: {glitch.Duration}, first color: {glitch.FirstColor}, second color: {glitch.SecondColor}, text color: {glitch.TextColor}";
+            {
+                record =
+                    $"{glitch.Duration},{glitch.FirstColor},{glitch.SecondColor},{glitch.TextColor}";
+                await using (StreamWriter streamWriter = new(File.Open("wwwroot/resource.txt", FileMode.Append)))
+                {
+                    streamWriter.WriteLine(record);
+                }
+            }
+        }
+    }
+    else if (request.Path == "/api/pull")
+    {
+        List<Glitch> glitches = new List<Glitch>();
+        using (StreamReader streamReader = new(File.Open("wwwroot/resource.txt", FileMode.Open)))
+        {
+            string str;
+            while ((str = streamReader.ReadLineAsync().Result) != null)
+            {
+                string[] record = str.Split(',');
+                glitches.Add(new Glitch(Int32.Parse(record[0]), record[1], record[2], record[3]));
+                response.ContentType = "application/json; charset=utf-8";
+            }
         }
 
-        await response.WriteAsJsonAsync(new {text = responseText});
+        await response.WriteAsJsonAsync(glitches.ToArray());
+    }
+    else if (request.Path == "/api/delete")
+    {
+        await using (FileStream fileStream = File.Create("wwwroot/resource.txt"))
+        {
+        }
     }
     else
     {
@@ -91,11 +122,10 @@ public class GlitchConverter : JsonConverter<Glitch>
     public override void Write(Utf8JsonWriter writer, Glitch glitch, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
-        writer.WriteNumber("duration", glitch.Duration);
+        writer.WriteNumber("duration",glitch.Duration);
         writer.WriteString("firstColor", glitch.FirstColor);
         writer.WriteString("secondColor", glitch.SecondColor);
         writer.WriteString("textColor", glitch.TextColor);
-
         writer.WriteEndObject();
     }
 }

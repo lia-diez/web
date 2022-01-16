@@ -1,4 +1,5 @@
 'use strict';
+localStorage.setItem('message', 'undefined');
 let createForm = document.createElement('button');
 createForm.textContent = 'Create new object';
 createForm.addEventListener('click', createFormEvent);
@@ -68,12 +69,12 @@ function createFormEvent() {
     let buttonParagraph = document.createElement('p');
     let buttonSend = document.createElement('button');
     buttonSend.textContent = 'Create!';
-    buttonSend.addEventListener('click', send);
+    buttonSend.addEventListener('click', CreateSend);
     buttonParagraph.appendChild(buttonSend);
     form.appendChild(buttonParagraph);
 }
 
-async function send(e) {
+async function CreateSend(event) {
     let main = document.getElementsByTagName('main')[0];
     main.removeChild(field);
     main.innerHTML +=
@@ -93,17 +94,18 @@ async function send(e) {
     main.innerHTML += '<div> </div>';
 
     document.getElementsByTagName('main')[0].appendChild(createForm);
-    e.preventDefault();
-    const response = await fetch('/api/setting', {
+
+    event.preventDefault();
+    let response = await fetch('/api/setting', {
         method: 'POST',
-        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            duration,
-            firstColor,
-            secondColor,
-            textColor,
+            duration: duration.value,
+            firstColor: firstColor.value,
+            secondColor: secondColor.value,
+            textColor: textColor.value,
         }),
     });
     const message = await response.json();
-    alert(message);
+    console.log(message);
 }
